@@ -61,6 +61,8 @@ function game() {
         console.log("You tied the game.")
     }
 
-    game()
+    
 }
+
+game()
 
