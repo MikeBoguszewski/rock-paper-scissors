@@ -1,13 +1,29 @@
-const buttons = document.querySelectorAll("button");
+const buttons = document.querySelectorAll(".inputs");
+const score = document.querySelector("#score");
+const finalResult = document.querySelector("#final-result");
+const roundResult = document.querySelector("#round-result");
+
+const restartButton = document.querySelector("#restart")
+
+score.textContent = "You: 0 Computer: 0 Ties: 0";
+let playerScore = 0;
+let computerScore = 0;
+let ties = 0
+let gameOver = false
 // For each button click, call playRound function with the correct playerSelection //
 buttons.forEach((button) => {
-    button.addEventListener('click', () => {
-        let playerSelection = button.getAttribute('id')
-        console.log(playerSelection)
-        playRound(playerSelection)
+    button.addEventListener("click", () => {
+        if (gameOver === false) {
+            let playerSelection = button.getAttribute('id');
+            didWin = playRound(playerSelection);
+            calculateScore(didWin);
+        }
+        
+
     } );
 });
 
+restartButton.addEventListener("click", restartGame )
 
 
 
@@ -26,57 +42,53 @@ function getComputerChoice () {
 }
 
 function playRound (playerSelection) {
-    let playerWin;
+    let didWin;
     let computerSelection = getComputerChoice()
-    // let playerSelection = prompt("Rock, Paper, or Scissors?")
-    // playerSelection = playerSelection.toLowerCase();
-    // playerSelection = playerSelection[0].toUpperCase() + playerSelection.slice(1);
     let result;
 
     if (playerSelection == "Rock" && computerSelection == "Scissors" || playerSelection == "Paper" && computerSelection == "Rock" || playerSelection == "Scissors" && computerSelection == "Paper") {
-        result = "You Win! " + playerSelection + " beats " + computerSelection + ".";
-        playerWin = true;
+        roundResult.textContent = "You Win! " + playerSelection + " beats " + computerSelection + ".";
+        didWin = true;
     } else if (playerSelection == "Rock" && computerSelection == "Paper" || playerSelection == "Paper" && computerSelection == "Scissors" || playerSelection == "Scissors" && computerSelection == "Rock") {
-        result = "You Lose! " + computerSelection + " beats " + playerSelection + ".";
-        playerWin = false;
+        roundResult.textContent = "You Lose! " + computerSelection + " beats " + playerSelection + ".";
+        didWin = false;
     } else {
-        result = "Tie";
+        roundResult.textContent = "Tie";
     }
 
-    console.log(result)
-
-    return playerWin
+    return didWin
 }
 
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
-    let ties = 0
-    let playerWin;
-    // for (let i = 0; i < 5; i++) {
-       playerWin = playRound()
-       if (playerWin) {
+function calculateScore() {
+    if (didWin === true) {
         playerScore += 1;
-       } else if (!playerWin) {
+    } else if (didWin === false) {
         computerScore += 1;
-       } else {
-        ties += 1
-       }
-    // }
-    console.log("Your score: " + playerScore)
-    console.log("Computer score: " + computerScore)
-    console.log("Ties: " + ties)
-
-    if (playerScore > computerScore) {
-        console.log("You win the game.")
-    } else if (playerScore < computerScore) {
-        console.log("You lose the game.")
     } else {
-        console.log("You tied the game.")
+        ties += 1
     }
+    score.textContent = ("You: " + playerScore + " Computer: " + computerScore + " Ties: " + ties )
 
+    if (playerScore === 5) {
+        finalResult.textContent = "You Win!"
+        gameOver = true
+    } else if (computerScore === 5) {
+        finalResult.textContent = "Computer Wins!"
+        gameOver = true
+    } else if (computerScore === 5 && playerScore === 5){
+        finalResult.textContent = "Tied game!"
+        gameOver = true
+    }
     
 }
 
-//game()
+function restartGame () {
+    gameOver = false;
+    playerScore = 0;
+    computerScore = 0;
+    ties = 0;
+    score.textContent = "You: 0 Computer: 0 Ties: 0";
+    finalResult.textContent = ""
+    roundResult.textContent = ""
+}
 
