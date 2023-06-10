@@ -1,3 +1,16 @@
+const buttons = document.querySelectorAll("button");
+// For each button click, call playRound function with the correct playerSelection //
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        let playerSelection = button.getAttribute('id')
+        console.log(playerSelection)
+        playRound(playerSelection)
+    } );
+});
+
+
+
+
 function getComputerChoice () {
     let choiceNumber = Math.floor(Math.random()*3);
     let computerChoice;
@@ -12,11 +25,12 @@ function getComputerChoice () {
     return computerChoice;
 }
 
-function playRound (computerSelection) {
+function playRound (playerSelection) {
     let playerWin;
-    let playerSelection = prompt("Rock, Paper, or Scissors?")
-    playerSelection = playerSelection.toLowerCase();
-    playerSelection = playerSelection[0].toUpperCase() + playerSelection.slice(1);
+    let computerSelection = getComputerChoice()
+    // let playerSelection = prompt("Rock, Paper, or Scissors?")
+    // playerSelection = playerSelection.toLowerCase();
+    // playerSelection = playerSelection[0].toUpperCase() + playerSelection.slice(1);
     let result;
 
     if (playerSelection == "Rock" && computerSelection == "Scissors" || playerSelection == "Paper" && computerSelection == "Rock" || playerSelection == "Scissors" && computerSelection == "Paper") {
@@ -39,8 +53,8 @@ function game() {
     let computerScore = 0;
     let ties = 0
     let playerWin;
-    for (let i = 0; i < 5; i++) {
-       playerWin = playRound(getComputerChoice())
+    // for (let i = 0; i < 5; i++) {
+       playerWin = playRound()
        if (playerWin) {
         playerScore += 1;
        } else if (!playerWin) {
@@ -48,7 +62,7 @@ function game() {
        } else {
         ties += 1
        }
-    }
+    // }
     console.log("Your score: " + playerScore)
     console.log("Computer score: " + computerScore)
     console.log("Ties: " + ties)
@@ -64,5 +78,5 @@ function game() {
     
 }
 
-game()
+//game()
 
